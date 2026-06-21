@@ -1,28 +1,31 @@
+// src/utils/cardUtils.ts
+
 export function validateLuhn(number: string): boolean {
-  let sum = 0
-  let shouldDouble = false
+  let sum = 0;
+  let shouldDouble = false;
+
   for (let i = number.length - 1; i >= 0; i--) {
-    let digit = parseInt(number.charAt(i))
+    let digit = parseInt(number.charAt(i), 10);
     if (shouldDouble) {
-      digit *= 2
-      if (digit > 9) digit -= 9
+      digit *= 2;
+      if (digit > 9) digit -= 9;
     }
-    sum += digit
-    shouldDouble = !shouldDouble
+    sum += digit;
+    shouldDouble = !shouldDouble;
   }
-  return sum % 10 === 0
+  return sum % 10 === 0;
 }
 
 export function generateLuhnNumber(prefix: string, length: number): string {
-  let number = prefix
+  let number = prefix.replace(/\D/g, '');
   while (number.length < length - 1) {
-    number += Math.floor(Math.random() * 10)
+    number += Math.floor(Math.random() * 10);
   }
   for (let check = 0; check < 10; check++) {
-    const candidate = number + check
-    if (validateLuhn(candidate)) return candidate
+    const candidate = number + check;
+    if (validateLuhn(candidate)) return candidate;
   }
-  return number + '0'
+  return number + '0';
 }
 
 export function generateCards(
@@ -33,14 +36,14 @@ export function generateCards(
   cvvFixed: string,
   quantity: number
 ) {
-  const cards = []
+  const cards = [];
   for (let i = 0; i < quantity; i++) {
-    const number = generateLuhnNumber(bin, 16)
-    const cvv = cvvMode === 'random' 
-      ? Math.floor(100 + Math.random() * 900).toString() 
-      : cvvFixed
-    const holder = 'CARD HOLDER'
-    cards.push({ number, month, year, cvv, holder })
+    const number = generateLuhnNumber(bin, 16);
+    const cvv = cvvMode === 'random'
+      ? Math.floor(100 + Math.random() * 900).toString()
+      : cvvFixed;
+    const holder = 'CARD HOLDER';
+    cards.push({ number, month, year, cvv, holder });
   }
-  return cards
+  return cards;
 }
