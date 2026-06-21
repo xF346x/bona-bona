@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Copy, Settings, Trash2 } from 'lucide-react'
-import { generateCards, validateLuhn } from './utils/cardUtils'
+import { generateCards } from './utils/cardUtils'
 import { lookupBIN } from './services/binService'
 
 interface Card {
